@@ -8,7 +8,7 @@ function findAll(page = 0) {
 
 function find(id) {
     return InstanceAxios
-        .get("http://localhost:9000/schools/" + id)
+        .get("/schools/" + id)
         .then(response => response.data.content);
 }
 

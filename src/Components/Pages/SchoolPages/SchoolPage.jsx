@@ -11,13 +11,17 @@ function SchoolPage() {
             try {
                 const data = await schoolApi.findAll();
                 setSchools(data);
-                setColumns(Object.keys(data[0]).map(key => ({name: key, key: key})));
+                data.forEach(s => delete s.classes);
+                setColumns(Object.keys(data[0]).map(key => ({name: key.toUpperCase(), key: key})));
             } catch (error) {
                 console.log(error.response);
             }
         }
         fetchSchools();
     }, []);
+
+    console.log(columns);
+
 
     function handleEdit(id) {
         console.log(`Edit school ${id}`);

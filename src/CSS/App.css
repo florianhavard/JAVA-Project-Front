@@ -4,3 +4,10 @@
   justify-content: flex-start;
 }
 
+.page-container {
+  width: 100%;
+}
+
+.visually-hidden {
+    display: none;
+}

@@ -1,22 +1,40 @@
 import GenericTable from "../../Table/GenericTable";
-import {useEffect, useState} from "react";
+import { Pagination } from "react-bootstrap";
+import { useEffect, useState } from "react";
 import studentApi from "../../../Services/studentApi";
+import CustomPaginator from "../../CustomPaginator/CustomPaginator";
 
 function StudentPage() {
     const [students, setStudents] = useState([]);
     const [columns, setColumns] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+
+    async function findAll(page = 0) {
+        const response = await studentApi.findAll(page);
+        setTotalPages(response.totalPages);
+
+        if (response.content.length > 0 && columns.length === 0) {
+            setColumns(
+                Object.keys(response.content[0]).map((key) => ({ name: key, key: key }))
+            );
+        }
+
+        return response.content;
+    }
+
+    const handlePageChange = async (page) => {
+        try {
+            const data = await findAll(page);
+            setStudents(data);
+            setCurrentPage(page);
+        } catch (error) {
+            console.log(error.response);
+        }
+    };
 
     useEffect(() => {
-        const fetchStudents = async () => {
-            try {
-                const data = await studentApi.findAll();
-                setStudents(data);
-                setColumns(Object.keys(data[0]).map(key => ({name: key, key: key})));
-            } catch (error) {
-                console.log(error.response);
-            }
-        }
-        fetchStudents();
+        handlePageChange(0);
     }, []);
 
     function handleEdit(id) {
@@ -33,6 +51,18 @@ function StudentPage() {
         }
     }
 
-    return <GenericTable data={students} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />;
+    return (
+        <div className="page-container">
+            <GenericTable
+                data={students}
+                columns={columns}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+            />
+            <div className="paginator-container">
+                <CustomPaginator currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+            </div>
+        </div>
+    );
 }
-export default StudentPage
+export default StudentPage;
