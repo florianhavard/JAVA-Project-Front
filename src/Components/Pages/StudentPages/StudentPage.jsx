@@ -1,23 +1,38 @@
 import GenericTable from "../../Table/GenericTable";
+import {useEffect, useState} from "react";
+import studentApi from "../../../Services/studentApi";
 
 function StudentPage() {
-    const students =[{"id":1,"classe":{"id":1,"School":{"id":1,"name":"Ecole primaire Les Tilleuls","city":"Paris","type":"primaire"},"name":"CM1","grade":"6ème"},"firstname":"Emma","lastname":"Dupont"},{"id":2,"classe":{"id":1,"School":{"id":1,"name":"Ecole primaire Les Tilleuls","city":"Paris","type":"primaire"},"name":"CM1","grade":"6ème"},"firstname":"Hugo","lastname":"Martin"}, {"id":3,"classe":{"id":1,"School":{"id":1,"name":"Ecole primaire Les Tilleuls","city":"Paris","type":"primaire"},"name":"CM1","grade":"6ème"},"firstname":"Léa","lastname":"Dubois"}, {"id":4,"classe":{"id":1,"School":{"id":1,"name":"Ecole primaire Les Tilleuls","city":"Paris","type":"primaire"},"name":"CM1","grade":"6ème"},"firstname":"Lucas","lastname":"Garcia"}, {"id":5,"classe":{"id":1,"School":{"id":1,"name":"Ecole primaire Les Tilleuls","city":"Paris","type":"primaire"},"name":"CM1","grade":"6ème"},"firstname":"Louise","lastname":"Fournier"}, {"id":6,"classe":{"id":2,"School":{"id":1,"name":"Ecole primaire Les Tilleuls","city":"Paris","type":"primaire"},"name":"CM2","grade":"5ème"},"firstname":"Arthur","lastname":"Lefebvre"}, {"id":7,"classe":{"id":2,"School":{"id":1,"name":"Ecole primaire Les Tilleuls","city":"Paris","type":"primaire"},"name":"CM2","grade":"5ème"},"firstname":"Camille","lastname":"Moulin"}, {"id":8,"classe":{"id":2,"School":{"id":1,"name":"Ecole primaire Les Tilleuls","city":"Paris","type":"primaire"},"name":"CM2","grade":"5ème"},"firstname":"Enzo","lastname":"Roux"}, {"id":9,"classe":{"id":2,"School":{"id":1,"name":"Ecole primaire Les Tilleuls","city":"Paris","type":"primaire"},"name":"CM2","grade":"5ème"},"firstname":"Inès","lastname":"Perrin"}, {"id":10,"classe":{"id":2,"School":{"id":1,"name":"Ecole primaire Les Tilleuls","city":"Paris","type":"primaire"},"name":"CM2","grade":"5ème"},"firstname":"Mathis","lastname":"Fontaine"}, {"id":11,"classe":{"id":3,"School":{"id":1,"name":"Ecole primaire Les Tilleuls","city":"Paris","type":"primaire"},"name":"CP","grade":"7ème"},"firstname":"Charlotte","lastname":"Dumont"}, {"id":12,"classe":{"id":3,"School":{"id":1,"name":"Ecole primaire Les Tilleuls","city":"Paris","type":"primaire"},"name":"CP","grade":"7ème"},"firstname":"Ethan","lastname":"Girard"}]
+    const [students, setStudents] = useState([]);
+    const [columns, setColumns] = useState([]);
 
-    const columns = [
-        {key: 'id', name: '#'},
-        {key: 'classe.name', name: 'Classe'},
-        {key: 'firstname', name: 'Prénom'},
-        {key: 'lastname', name: 'Nom'}
-    ]
+    useEffect(() => {
+        const fetchStudents = async () => {
+            try {
+                const data = await studentApi.findAll();
+                setStudents(data);
+                setColumns(Object.keys(data[0]).map(key => ({name: key, key: key})));
+            } catch (error) {
+                console.log(error.response);
+            }
+        }
+        fetchStudents();
+    }, []);
 
     function handleEdit(id) {
         console.log(`Edit school ${id}`);
     }
 
-    function handleDelete(id) {
-        console.log(`Delete school ${id}`);
+    async function handleDelete(id) {
+        try {
+            await studentApi.delete(id);
+            const newStudents = students.filter(s => s.id !== id);
+            setStudents(newStudents);
+        } catch (error) {
+            console.error(error.response);
+        }
     }
 
-    return <GenericTable data={students} columns={columns} onEdit={handleEdit} onDelate={handleDelete} />;
+    return <GenericTable data={students} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />;
 }
 export default StudentPage
