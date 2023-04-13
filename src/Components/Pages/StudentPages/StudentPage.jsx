@@ -1,5 +1,4 @@
 import GenericTable from "../../Table/GenericTable";
-import { Pagination } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import studentApi from "../../../Services/studentApi";
 import CustomPaginator from "../../CustomPaginator/CustomPaginator";

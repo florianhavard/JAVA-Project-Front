@@ -1,23 +1,40 @@
 import GenericTable from '../../Table/GenericTable';
 import {useEffect, useState} from "react";
 import schoolApi from "../../../Services/schoolApi";
+import CustomPaginator from '../../CustomPaginator/CustomPaginator';
 
 function SchoolPage() {
     const [schools, setSchools] = useState([]);
     const [columns, setColumns] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+
+    async function findAll(page = 0) {
+        const response = await schoolApi.findAll(page);
+        setTotalPages(response.totalPages);
+
+        if (response.content.length > 0 && columns.length === 0) {
+            setColumns(
+                Object.keys(response.content[0]).map((key) => ({ name: key, key: key }))
+            );
+        }
+
+        return response.content;
+    }
+
+    const handlePageChange = async (page) => {
+        try {
+            const data = await findAll(page);
+            setSchools(data);
+            data.forEach(s => delete s.classes);
+            setCurrentPage(page);
+        } catch (error) {
+            console.log(error.response);
+        }
+    };
 
     useEffect(() => {
-        const fetchSchools = async () => {
-            try {
-                const data = await schoolApi.findAll();
-                setSchools(data);
-                data.forEach(s => delete s.classes);
-                setColumns(Object.keys(data[0]).map(key => ({name: key.toUpperCase(), key: key})));
-            } catch (error) {
-                console.log(error.response);
-            }
-        }
-        fetchSchools();
+        handlePageChange(0);
     }, []);
 
     console.log(columns);
@@ -38,12 +55,17 @@ function SchoolPage() {
     }
 
     return (
+        <div className="page-container">
         <GenericTable
             columns={columns}
             data={schools}
             onEdit={handleEdit}
             onDelete={handleDelete}
         />
+        <div className="paginator-container">
+                <CustomPaginator currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+            </div>
+        </div>
     );
 }
 

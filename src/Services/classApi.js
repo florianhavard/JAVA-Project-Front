@@ -3,7 +3,7 @@ import InstanceAxios from "../Configuration/InstanceAxios";
 function findAll(page = 0) {
     return InstanceAxios
         .get("/classes?page=" + page)
-        .then(response => response.data.content);
+        .then(response => response.data);
 }
 
 function find(id) {

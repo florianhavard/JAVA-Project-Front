@@ -29,7 +29,7 @@ function App() {
         <div className="App">
           <SideBar />
           <Routes>
-            <Route exact path="/Schools" element={<SchoolPage />} />
+            <Route exact path="/" element={<SchoolPage />} />
             <Route exact path="/Classes" element={<ClassPage />} />
             <Route exact path="/Students" element={<StudentPage />} />
           </Routes>
