@@ -1,191 +1,39 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import GenericTable from '../../Table/GenericTable';
+import classApi from "../../../Services/classApi";
 
 function ClassPage() {
-  const classes = [
-    {
-      id: 1,
-      school: {
-        id: 1,
-        name: 'École maternelle Les Petits Lapins',
-        city: 'Paris',
-        type: 'maternelle',
-      },
-      name: 'Classe de maternelle 1',
-      grade: 'petite section',
-    },
-    {
-      id: 2,
-      school: {
-        id: 2,
-        name: 'École primaire Jean Jaurès',
-        city: 'Lyon',
-        type: 'primaire',
-      },
-      name: 'Classe de CE1',
-      grade: 'CE1',
-    },
-    {
-      id: 3,
-      school: {
-        id: 3,
-        name: 'Collège Jules Verne',
-        city: 'Marseille',
-        type: 'collège',
-      },
-      name: 'Classe de 5ème',
-      grade: '5ème',
-    },
-    {
-      id: 4,
-      school: {
-        id: 4,
-        name: 'Lycée Victor Hugo',
-        city: 'Toulouse',
-        type: 'lycée',
-      },
-      name: 'Classe de terminale S',
-      grade: 'terminale S',
-    },
-    {
-      id: 5,
-      school: {
-        id: 5,
-        name: "École maternelle Les P'tits Loups",
-        city: 'Lille',
-        type: 'maternelle',
-      },
-      name: 'Classe de maternelle 2',
-      grade: 'moyenne section',
-    },
-    {
-      id: 6,
-      school: {
-        id: 1,
-        name: 'École maternelle Les Petits Lapins',
-        city: 'Paris',
-        type: 'maternelle',
-      },
-      name: 'Classe de maternelle 3',
-      grade: 'grande section',
-    },
-    {
-      id: 7,
-      school: {
-        id: 2,
-        name: 'École primaire Jean Jaurès',
-        city: 'Lyon',
-        type: 'primaire',
-      },
-      name: 'Classe de CE2',
-      grade: 'CE2',
-    },
-    {
-      id: 8,
-      school: {
-        id: 3,
-        name: 'Collège Jules Verne',
-        city: 'Marseille',
-        type: 'collège',
-      },
-      name: 'Classe de 4ème',
-      grade: '4ème',
-    },
-    {
-      id: 9,
-      school: {
-        id: 4,
-        name: 'Lycée Victor Hugo',
-        city: 'Toulouse',
-        type: 'lycée',
-      },
-      name: 'Classe de première L',
-      grade: 'première L',
-    },
-    {
-      id: 10,
-      school: {
-        id: 5,
-        name: "École maternelle Les P'tits Loups",
-        city: 'Lille',
-        type: 'maternelle',
-      },
-      name: 'Classe de maternelle 4',
-      grade: 'petite section',
-    },
-    {
-      id: 11,
-      school: {
-        id: 1,
-        name: 'École maternelle Les Petits Lapins',
-        city: 'Paris',
-        type: 'maternelle',
-      },
-      name: 'Classe de maternelle 5',
-      grade: 'moyenne section',
-    },
-    {
-      id: 12,
-      school: {
-        id: 2,
-        name: 'École primaire Jean Jaurès',
-        city: 'Lyon',
-        type: 'primaire',
-      },
-      name: 'Classe de CM2',
-      grade: 'CM2',
-    },
-    {
-      id: 13,
-      school: {
-        id: 3,
-        name: 'Collège Jules Verne',
-        city: 'Marseille',
-        type: 'collège',
-      },
-      name: 'Classe de 3ème',
-      grade: '3ème',
-    },
-    {
-      id: 14,
-      school: {
-        id: 4,
-        name: 'Lycée Victor Hugo',
-        city: 'Toulouse',
-        type: 'lycée',
-      },
-      name: 'Classe de terminale ES',
-      grade: 'terminale ES',
-    },
-    {
-      id: 15,
-      school: {
-        id: 5,
-        name: "École maternelle Les P'tits Loups",
-        city: 'Lille',
-        type: 'maternelle',
-      },
-      name: 'Classe de maternelle 6',
-      grade: 'grande section',
-    },
-  ];
+    const [classes, setClasses] = useState([]);
+    const [columns, setColumns] = useState([]);
 
-  const columns = [
-    { key: 'id', name: '#' },
-    { key: 'school.name', name: 'School' },
-    { key: 'name', name: 'Name' },
-    { key: 'grade', name: 'Grade' },
-  ];
+    useEffect(() => {
+        const fetchClasses = async () => {
+            try {
+                const data = await classApi.findAll();
+                setClasses(data);
+                setColumns(Object.keys(data[0]).map(key => ({name: key, key: key})));
+            } catch (error) {
+                console.log(error.response);
+            }
+        }
+        fetchClasses();
+    }, []);
 
-  function handleEdit(id) {
-    console.log(`Edit school ${id}`);
-  }
+    function handleEdit(id) {
+        console.log(`Edit school ${id}`);
+    }
 
-  function handleDelete(id) {
-    console.log(`Delete school ${id}`);
-  }
+    async function handleDelete(id) {
+        try {
+            await classApi.delete(id);
+            const newClasses = classes.filter(c => c.id !== id);
+            setClasses(newClasses);
+        } catch (error) {
+            console.error(error.response);
+        }
+    }
 
-  return <GenericTable data={classes} columns={columns} onEdit={handleEdit} onDelate={handleDelete} />;
+    return <GenericTable data={classes} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />;
 }
 
 export default ClassPage;
