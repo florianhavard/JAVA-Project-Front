@@ -19,6 +19,8 @@ function ClassPage() {
         fetchClasses();
     }, []);
 
+    console.log(columns);
+
     function handleEdit(id) {
         console.log(`Edit school ${id}`);
     }
@@ -33,7 +35,14 @@ function ClassPage() {
         }
     }
 
-    return <GenericTable data={classes} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />;
+    return (
+        <GenericTable
+            data={classes}
+            columns={columns}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+        />
+    );
 }
 
 export default ClassPage;
