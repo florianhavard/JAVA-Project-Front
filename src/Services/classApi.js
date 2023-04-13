@@ -1,45 +1,39 @@
-import axios from "axios";
+import InstanceAxios from "../Configuration/InstanceAxios";
 
-axios.create({
-    headers: {'Access-Control-Allow-Origin': '*'},
-    responseType: 'json',
-});
-
-const baseUrl = "http://localhost:9000";
 
 function findAll(page = 0) {
-    return axios
-        .get(baseUrl + "/classes?page=" + page)
+    return InstanceAxios
+        .get("/classes?page=" + page)
         .then(response => response.data.content);
 }
 
 function find(id) {
-    return axios
-        .get(baseUrl + "/classes/" + id)
+    return InstanceAxios
+        .get("/classes/" + id)
         .then(response => response.data.content);
 }
 
 function create(classroom) {
-    return axios
-        .post(baseUrl + "/classes", classroom)
+    return InstanceAxios
+        .post("/classes", classroom)
         .then(response => response.data.content);
 }
 
 function update(id, classroom) {
-    return axios
-        .put(baseUrl + "/classes/" + id, classroom)
+    return InstanceAxios
+        .put("/classes/" + id, classroom)
         .then(response => response.data.content);
 }
 
 function deleteClass(id) {
-    return axios
-        .delete(baseUrl + "/classes/" + id)
+    return InstanceAxios
+        .delete("/classes/" + id)
         .then(response => response.data.content);
 }
 
 function searchClasses(search) {
-    return axios
-        .get(baseUrl + "/classes?search=" + search)
+    return InstanceAxios
+        .get("/classes?search=" + search)
         .then(response => response.data.content);
 }
 
