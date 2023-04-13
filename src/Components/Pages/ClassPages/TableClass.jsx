@@ -1,7 +1,7 @@
 function TableClass(props) {
   return (
-    <table class="table">
-      <thead class="thead-dark">
+    <table className="table">
+      <thead className="thead-dark">
         <tr>
           <th scope="col">#</th>
           <th scope="col">School</th>
@@ -11,6 +11,7 @@ function TableClass(props) {
       </thead>
       <tbody>
         {props.classes.map((classe) => {
+          console.log(classe.id)
           return <tr>
             <th scope="row" key={classe.id}>{classe.id}</th>
             <td>{classe.school.name}</td>
