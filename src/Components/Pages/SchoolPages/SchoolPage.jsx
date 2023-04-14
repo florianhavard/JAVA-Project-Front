@@ -1,17 +1,16 @@
 import GenericTable from '../../Table/GenericTable';
 import {useEffect, useState} from "react";
 import schoolApi from "../../../Services/schoolApi";
-<<<<<<< HEAD
 import CustomPaginator from '../../CustomPaginator/CustomPaginator';
-=======
 import {useNavigate} from "react-router-dom";
->>>>>>> dd475ab (form added)
+import Search from "../../Search/Search";
 
 function SchoolPage() {
     const [schools, setSchools] = useState([]);
     const [columns, setColumns] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
 
     async function findAll(page = 0) {
@@ -20,8 +19,11 @@ function SchoolPage() {
 
         if (response.content.length > 0 && columns.length === 0) {
             setColumns(
-                Object.keys(response.content[0]).map((key) => ({ name: key, key: key }))
+                Object.keys(response.content[0])
+                    .filter((key) => key !== "classes")
+                    .map((key) => ({ name: key, key: key }))
             );
+
         }
 
         return response.content;
@@ -35,6 +37,19 @@ function SchoolPage() {
             setCurrentPage(page);
         } catch (error) {
             console.log(error.response);
+        }
+    };
+
+    const handleSearch = async () => {
+        try {
+            if (searchTerm) {
+                const data = await schoolApi.search(searchTerm);
+                setSchools(data);
+            } else {
+                handlePageChange(0);
+            }
+        } catch (error) {
+            console.error(error.response);
         }
     };
 
@@ -58,6 +73,14 @@ function SchoolPage() {
 
     return (
         <div className="page-container">
+            <Search
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                handleSearch={handleSearch}
+            />
+            <div className="btn-container d-flex justify-content-end">
+                <button className="btn btn-primary" onClick={() => navigate('/Schools/create')}>Ajouter une école</button>
+            </div>
         <GenericTable
             columns={columns}
             data={schools}

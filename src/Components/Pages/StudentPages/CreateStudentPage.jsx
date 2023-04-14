@@ -37,7 +37,7 @@ export default function CreateStudentPage() {
         const fetchClasses = async () => {
             try {
                 const data = await classApi.findAll();
-                setClasses(data);
+                setClasses(data.content);
             } catch (error) {
                 console.error(error.response);
             }
@@ -46,10 +46,12 @@ export default function CreateStudentPage() {
     }, []);
 
     useEffect(() => {
-        const options = classes.map(classroom => {
-            return { value: classroom.id, label: classroom.name };
-        });
-        setSelectOptions(options);
+        if (classes.length > 0) {
+            const options = classes.map(classroom => {
+                return { value: classroom.id, label: classroom.name };
+            });
+            setSelectOptions(options);
+        }
     }, [classes]);
 
     const onSubmit = async (formData) => {

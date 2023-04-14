@@ -1,6 +1,8 @@
 import GenericForm from '../../GenericForm/GenericForm';
 import schoolApi from "../../../Services/schoolApi";
 import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import classApi from "../../../Services/classApi";
 
 const initialValues = {
     name: '',
@@ -29,12 +31,13 @@ const validate = (values) => {
 export default function CreateClassPage(){
     const [schools, setSchools] = useState([]);
     const [selectOptions, setSelectOptions] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchSchools = async () => {
             try {
                 const data = await schoolApi.findAll();
-                setSchools(data);
+                setSchools(data.content);
             } catch (error) {
                 console.error(error.response);
             }
@@ -51,8 +54,8 @@ export default function CreateClassPage(){
 
     const onSubmit = async (formData) => {
         try {
-            let createdSchool = await schoolApi.create(formData);
-            console.log('School created: ', createdSchool);
+            let createdSchool = await classApi.create(formData);
+            navigate('/classes');
         } catch (error) {
             console.error(error);
         }

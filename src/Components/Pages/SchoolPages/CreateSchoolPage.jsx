@@ -1,6 +1,7 @@
 import React from 'react';
 import GenericForm from '../../GenericForm/GenericForm';
 import schoolApi from "../../../Services/schoolApi";
+import {useNavigate} from "react-router-dom";
 
 const labels = [
     {
@@ -48,10 +49,12 @@ const validate = (values) => {
 };
 
 export default function CreateSchoolPage(){
+    const navigate = useNavigate();
+
     const onSubmit = async (formData) => {
         try {
             let createdSchool = await schoolApi.create(formData);
-            console.log('School created: ', createdSchool);
+            navigate('/schools');
         } catch (error) {
             console.error(error);
         }
@@ -59,7 +62,7 @@ export default function CreateSchoolPage(){
 
     return (
         <div className="page-container">
-            <h2 className="text-center">Créer jour une école</h2>
+            <h2 className="text-center">Créer une école</h2>
             <GenericForm
                 initialValues={initialValues}
                 onSubmit={onSubmit}

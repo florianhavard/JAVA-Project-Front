@@ -9,7 +9,7 @@ import CreateSchoolPage from './Components/Pages/SchoolPages/CreateSchoolPage';
 import EditSchoolPage from "./Components/Pages/SchoolPages/EditSchoolPage";
 import CreateClassPage from "./Components/Pages/ClassPages/CreateClassPage";
 import EditClassPage from "./Components/Pages/ClassPages/EditClassPage";
-import CreateStudentPage from "./Components/Pages/StudentPages/CreateStudentPaga";
+import CreateStudentPage from "./Components/Pages/StudentPages/CreateStudentPage";
 import EditStudentPage from "./Components/Pages/StudentPages/EditStudentPage";
 
 

@@ -19,7 +19,6 @@ function create(student) {
 }
 
 function update(id, student) {
-    console.log(id, student)
     return InstanceAxios
         .put("/students/" + id, student)
         .then(response => response.data.content);

@@ -43,7 +43,7 @@ export default function EditClassPage() {
             try {
                 await fetchClassroom();
                 const data = await schoolApi.findAll();
-                setSchools(data);
+                setSchools(data.content);
             } catch (error) {
                 console.error(error.response);
             }
