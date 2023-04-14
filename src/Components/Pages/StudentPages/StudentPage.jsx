@@ -2,12 +2,16 @@ import GenericTable from "../../Table/GenericTable";
 import { useEffect, useState } from "react";
 import studentApi from "../../../Services/studentApi";
 import CustomPaginator from "../../CustomPaginator/CustomPaginator";
+import {useNavigate} from "react-router-dom";
+import Search from "../../Search/Search";
 
 function StudentPage() {
+    const [searchTerm, setSearchTerm] = useState("");
     const [students, setStudents] = useState([]);
     const [columns, setColumns] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const navigate = useNavigate();
 
     async function findAll(page = 0) {
         const response = await studentApi.findAll(page);
@@ -28,7 +32,20 @@ function StudentPage() {
             setStudents(data);
             setCurrentPage(page);
         } catch (error) {
-            console.log(error.response);
+            console.error(error.response);
+        }
+    };
+
+    const handleSearch = async () => {
+        if (searchTerm) {
+            try {
+                const data = await studentApi.search(searchTerm);
+                setStudents(data);
+            } catch (error) {
+                console.error(error.response);
+            }
+        } else {
+            handlePageChange(currentPage);
         }
     };
 
@@ -37,7 +54,7 @@ function StudentPage() {
     }, []);
 
     function handleEdit(id) {
-        console.log(`Edit school ${id}`);
+        navigate(`/Students/edit/${id}`);
     }
 
     async function handleDelete(id) {
@@ -52,6 +69,14 @@ function StudentPage() {
 
     return (
         <div className="page-container">
+            <Search
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                handleSearch={handleSearch}
+            />
+            <div className="btn-container d-flex justify-content-end">
+                <button className="btn btn-primary" onClick={() => navigate('/Students/create')}>Ajouter un étudiant</button>
+            </div>
             <GenericTable
                 data={students}
                 columns={columns}

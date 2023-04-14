@@ -5,33 +5,30 @@ import SideBar from './Components/SideBar/SideBar';
 import SchoolPage from './Components/Pages/SchoolPages/SchoolPage';
 import ClassPage from './Components/Pages/ClassPages/ClassPage';
 import StudentPage from './Components/Pages/StudentPages/StudentPage';
-import schoolApi from "./Services/schoolApi";
-import {useEffect, useState} from "react";
+import CreateSchoolPage from './Components/Pages/SchoolPages/CreateSchoolPage';
+import EditSchoolPage from "./Components/Pages/SchoolPages/EditSchoolPage";
+import CreateClassPage from "./Components/Pages/ClassPages/CreateClassPage";
+import EditClassPage from "./Components/Pages/ClassPages/EditClassPage";
+import CreateStudentPage from "./Components/Pages/StudentPages/CreateStudentPage";
+import EditStudentPage from "./Components/Pages/StudentPages/EditStudentPage";
 
 
 function App() {
-    const [schools, setSchools] = useState([]);
-  useEffect(() => {
-    const fetchSchools = async () => {
-      try {
-        const schools = await schoolApi.findAll();
-        setSchools(schools);
-        console.log(schools)
-      } catch (error) {
-        console.log(error.response);
-      }
-    }
-    fetchSchools();
-  }, []);
-
   return (
       <Router>
         <div className="App">
           <SideBar />
           <Routes>
             <Route exact path="/" element={<SchoolPage />} />
+            <Route exact path="/Schools" element={<SchoolPage />} />
+            <Route exact path="/Schools/create" element={<CreateSchoolPage />} />
+            <Route exact path="/Schools/edit/:id" element={<EditSchoolPage />} />
             <Route exact path="/Classes" element={<ClassPage />} />
-            <Route exact path="/Students" element={<StudentPage />} />
+              <Route exact path="/Classes/create" element={<CreateClassPage />} />
+              <Route exact path="/Classes/edit/:id" element={<EditClassPage />} />
+              <Route exact path="/Students" element={<StudentPage />} />
+              <Route exact path="/Students/create" element={<CreateStudentPage />} />
+              <Route exact path="/Students/edit/:id" element={<EditStudentPage />} />
           </Routes>
         </div>
       </Router>
