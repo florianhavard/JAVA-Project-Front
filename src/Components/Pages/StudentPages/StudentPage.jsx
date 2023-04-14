@@ -28,7 +28,7 @@ function StudentPage() {
             setStudents(data);
             setCurrentPage(page);
         } catch (error) {
-            console.log(error.response);
+            console.error(error.response);
         }
     };
 

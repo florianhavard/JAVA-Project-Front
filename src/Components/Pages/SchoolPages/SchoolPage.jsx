@@ -1,13 +1,18 @@
 import GenericTable from '../../Table/GenericTable';
 import {useEffect, useState} from "react";
 import schoolApi from "../../../Services/schoolApi";
+<<<<<<< HEAD
 import CustomPaginator from '../../CustomPaginator/CustomPaginator';
+=======
+import {useNavigate} from "react-router-dom";
+>>>>>>> dd475ab (form added)
 
 function SchoolPage() {
     const [schools, setSchools] = useState([]);
     const [columns, setColumns] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const navigate = useNavigate();
 
     async function findAll(page = 0) {
         const response = await schoolApi.findAll(page);
@@ -37,11 +42,8 @@ function SchoolPage() {
         handlePageChange(0);
     }, []);
 
-    console.log(columns);
-
-
     function handleEdit(id) {
-        console.log(`Edit school ${id}`);
+        navigate(`/Schools/edit/${id}`);
     }
 
     async function handleDelete(id) {

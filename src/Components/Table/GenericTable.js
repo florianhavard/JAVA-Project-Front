@@ -2,9 +2,6 @@ import '../../CSS/GenericTable.css';
 
 function GenericTable(props) {
     const { columns, data, onEdit, onDelete } = props;
-
-    console.log(data)
-
     return (
         <table className="table">
             <thead className="thead-dark">

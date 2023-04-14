@@ -9,7 +9,7 @@ function findAll(page = 0) {
 function find(id) {
     return InstanceAxios
         .get("/schools/" + id)
-        .then(response => response.data.content);
+        .then(response => response.data);
 }
 
 function create(school) {

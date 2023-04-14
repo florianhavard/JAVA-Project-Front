@@ -9,7 +9,7 @@ function findAll(page = 0) {
 function find(id) {
     return InstanceAxios
         .get("/students/" + id)
-        .then(response => response.data.content);
+        .then(response => response.data);
 }
 
 function create(student) {
@@ -19,6 +19,7 @@ function create(student) {
 }
 
 function update(id, student) {
+    console.log(id, student)
     return InstanceAxios
         .put("/students/" + id, student)
         .then(response => response.data.content);

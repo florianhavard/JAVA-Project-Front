@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import GenericTable from '../../Table/GenericTable';
 import classApi from "../../../Services/classApi";
 import CustomPaginator from '../../CustomPaginator/CustomPaginator';
+import {useNavigate} from "react-router-dom";
 
 function ClassPage() {
     const [classes, setClasses] = useState([]);
     const [columns, setColumns] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const navigate = useNavigate();
 
     async function findAll(page = 0) {
         const response = await classApi.findAll(page);
@@ -36,10 +38,8 @@ function ClassPage() {
         handlePageChange(0);
     }, []);
 
-    console.log(columns);
-
     function handleEdit(id) {
-        console.log(`Edit school ${id}`);
+        navigate(`/Classes/edit/${id}`);
     }
 
     async function handleDelete(id) {

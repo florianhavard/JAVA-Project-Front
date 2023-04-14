@@ -6,28 +6,35 @@ function findAll(page = 0) {
         .then(response => response.data);
 }
 
+function findBySchool(id) {
+    console.log(id)
+    return InstanceAxios
+        .get("/classes/school/" + id)
+        .then(response => response.data);
+}
+
 function find(id) {
     return InstanceAxios
         .get("/classes/" + id)
-        .then(response => response.data.content);
+        .then(response => response.data);
 }
 
 function create(classroom) {
     return InstanceAxios
         .post("/classes", classroom)
-        .then(response => response.data.content);
+        .then(response => response.data);
 }
 
 function update(id, classroom) {
     return InstanceAxios
         .put("/classes/" + id, classroom)
-        .then(response => response.data.content);
+        .then(response => response.data);
 }
 
 function deleteClass(id) {
     return InstanceAxios
         .delete("/classes/" + id)
-        .then(response => response.data.content);
+        .then(response => response.data);
 }
 
 function searchClasses(search) {
@@ -38,6 +45,7 @@ function searchClasses(search) {
 
 export default {
     findAll,
+    findBySchool,
     find,
     create,
     update,
