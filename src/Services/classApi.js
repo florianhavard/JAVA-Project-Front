@@ -7,7 +7,6 @@ function findAll(page = 0) {
 }
 
 function findBySchool(id) {
-    console.log(id)
     return InstanceAxios
         .get("/classes/school/" + id)
         .then(response => response.data);

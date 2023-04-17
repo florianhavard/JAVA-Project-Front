@@ -4,6 +4,7 @@ import schoolApi from "../../../Services/schoolApi";
 import CustomPaginator from '../../CustomPaginator/CustomPaginator';
 import {useNavigate} from "react-router-dom";
 import Search from "../../Search/Search";
+import Title from "../../Title/Title";
 
 function SchoolPage() {
     const [schools, setSchools] = useState([]);
@@ -73,6 +74,7 @@ function SchoolPage() {
 
     return (
         <div className="page-container">
+            <Title text="Liste des écoles" />
             <Search
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}

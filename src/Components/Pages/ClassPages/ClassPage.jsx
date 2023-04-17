@@ -5,6 +5,8 @@ import CustomPaginator from '../../CustomPaginator/CustomPaginator';
 import {useNavigate} from "react-router-dom";
 import Search from "../../Search/Search";
 import studentApi from "../../../Services/studentApi";
+import Title from "../../Title/Title";
+import schoolApi from "../../../Services/schoolApi";
 
 function ClassPage() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -12,6 +14,8 @@ function ClassPage() {
     const [columns, setColumns] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [schools, setSchools] = useState([]);
+    const [selectedSchoolId, setSelectedSchoolId] = useState(null);
     const navigate = useNavigate();
 
     async function findAll(page = 0) {
@@ -26,6 +30,19 @@ function ClassPage() {
 
         return response.content;
     }
+
+    const handleFilterBySchool = async (event) => {
+        const selectedSchoolId = event.target.value;
+        setSelectedSchoolId(selectedSchoolId);
+        try {
+            const data = await classApi.findBySchool(selectedSchoolId);
+            setClasses(data.content);
+            setTotalPages(data.totalPages);
+            setCurrentPage(0);
+        } catch (error) {
+            console.error(error.response);
+        }
+    };
 
     const handlePageChange = async (page) => {
         try {
@@ -51,8 +68,25 @@ function ClassPage() {
     };
 
     useEffect(() => {
+        async function fetchSchools() {
+            try {
+                const data = await schoolApi.findAll();
+                setSchools(data.content);
+            } catch (error) {
+                console.error(error.response);
+            }
+        }
+        fetchSchools();
+    }, []);
+
+    useEffect(() => {
         handlePageChange(0);
     }, []);
+
+    useEffect(() => {
+        handleFilterBySchool(selectedSchoolId);
+    }, [selectedSchoolId]);
+
 
     function handleEdit(id) {
         navigate(`/Classes/edit/${id}`);
@@ -70,6 +104,16 @@ function ClassPage() {
 
     return (
         <div className="page-container">
+            <Title text="Liste des classes" />
+            <div className="form-group">
+                <label htmlFor="school-select">Filtrer par école :</label>
+                <select id="school-select" className="form-control" onChange={handleFilterBySchool}>
+                    <option value="">Toutes les écoles</option>
+                    {schools.map(school => (
+                        <option key={school.id} value={school.id}>{school.name}</option>
+                    ))}
+                </select>
+            </div>
             <Search
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}

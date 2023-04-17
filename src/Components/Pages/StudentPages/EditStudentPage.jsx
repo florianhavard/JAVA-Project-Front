@@ -42,10 +42,10 @@ export default function EditStudentPage() {
 
         const fetchClassrooms = async () => {
             try {
-                const acualStudent = await fetchStudent();
-                const actualClassroom = await classApi.find(acualStudent.classId);
+                const actualStudent = await fetchStudent();
+                const actualClassroom = await classApi.find(actualStudent.classId);
                 const data = await classApi.findBySchool(actualClassroom.schoolId);
-                setClassrooms(data);
+                setClassrooms(data.content);
             } catch (error) {
                 console.error(error.response);
             }

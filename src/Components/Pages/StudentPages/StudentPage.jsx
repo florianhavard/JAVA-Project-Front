@@ -2,8 +2,9 @@ import GenericTable from "../../Table/GenericTable";
 import { useEffect, useState } from "react";
 import studentApi from "../../../Services/studentApi";
 import CustomPaginator from "../../CustomPaginator/CustomPaginator";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Search from "../../Search/Search";
+import Title from "../../Title/Title";
 
 function StudentPage() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +20,10 @@ function StudentPage() {
 
         if (response.content.length > 0 && columns.length === 0) {
             setColumns(
-                Object.keys(response.content[0]).map((key) => ({ name: key, key: key }))
+                Object.keys(response.content[0]).map((key) => ({
+                    name: key,
+                    key: key,
+                }))
             );
         }
 
@@ -60,7 +64,7 @@ function StudentPage() {
     async function handleDelete(id) {
         try {
             await studentApi.delete(id);
-            const newStudents = students.filter(s => s.id !== id);
+            const newStudents = students.filter((s) => s.id !== id);
             setStudents(newStudents);
         } catch (error) {
             console.error(error.response);
@@ -69,13 +73,21 @@ function StudentPage() {
 
     return (
         <div className="page-container">
-            <Search
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                handleSearch={handleSearch}
-            />
-            <div className="btn-container d-flex justify-content-end">
-                <button className="btn btn-primary" onClick={() => navigate('/Students/create')}>Ajouter un étudiant</button>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+                <Title text="Liste des étudiants" />
+                <div>
+                    <Search
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                        handleSearch={handleSearch}
+                    />
+                    <button
+                        className="btn btn-primary ms-3"
+                        onClick={() => navigate("/Students/create")}
+                    >
+                        Ajouter un étudiant
+                    </button>
+                </div>
             </div>
             <GenericTable
                 data={students}
@@ -84,7 +96,11 @@ function StudentPage() {
                 onDelete={handleDelete}
             />
             <div className="paginator-container">
-                <CustomPaginator currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                <CustomPaginator
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    handlePageChange={handlePageChange}
+                />
             </div>
         </div>
     );
