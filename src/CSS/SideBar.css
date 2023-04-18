@@ -1,0 +1,45 @@
+/* SideBar.css */
+
+.sidebar-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding: 2rem 1rem;
+    background-color: #1c1c1e;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    margin-bottom: 1.5rem;
+}
+
+.nav-item:hover {
+    cursor: pointer;
+}
+
+.nav-item a {
+    text-decoration: none;
+    color: #9da5b5;
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-item a:hover {
+    color: #ffffff;
+    transform: translateX(5px);
+}
+
+.nav-item a .react-icon {
+    margin-right: 1rem;
+    font-size: 1.5rem;
+}

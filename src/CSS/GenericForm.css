@@ -1,0 +1,7 @@
+.form-container {
+    margin: 10px auto;
+    max-width: 700px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
