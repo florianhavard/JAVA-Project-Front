@@ -90,7 +90,10 @@ function SchoolPage() {
             onDelete={handleDelete}
         />
         <div className="paginator-container">
-                <CustomPaginator currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+                <CustomPaginator 
+                    currentPage={currentPage} 
+                    totalPages={totalPages} 
+                    handlePageChange={handlePageChange} />
             </div>
         </div>
     );
