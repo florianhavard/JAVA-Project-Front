@@ -73,28 +73,22 @@ function StudentPage() {
 
     return (
         <div className="page-container">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-                <Title text="Liste des étudiants" />
-                <div>
-                    <Search
-                        searchTerm={searchTerm}
-                        setSearchTerm={setSearchTerm}
-                        handleSearch={handleSearch}
-                    />
-                    <button
-                        className="btn btn-primary ms-3"
-                        onClick={() => navigate("/Students/create")}
-                    >
-                        Ajouter un étudiant
-                    </button>
+            <Title text="Liste des étudiants" />
+                <Search
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    handleSearch={handleSearch}
+                />
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                    <button className="btn btn-primary ms-3" onClick={() => navigate("/Students/create")} > Ajouter un étudiant </button>
                 </div>
-            </div>
             <GenericTable
                 data={students}
                 columns={columns}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
             />
+
             <div className="paginator-container">
                 <CustomPaginator
                     currentPage={currentPage}
