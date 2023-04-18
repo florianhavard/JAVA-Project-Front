@@ -45,7 +45,9 @@ function SchoolPage() {
         try {
             if (searchTerm) {
                 const data = await schoolApi.search(searchTerm);
-                setSchools(data);
+                setSchools(data.content);
+                setTotalPages(data.totalPages);
+                setCurrentPage(0);
             } else {
                 handlePageChange(0);
             }

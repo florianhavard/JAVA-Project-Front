@@ -44,7 +44,9 @@ function StudentPage() {
         if (searchTerm) {
             try {
                 const data = await studentApi.search(searchTerm);
-                setStudents(data);
+                setStudents(data.content);
+                setTotalPages(data.totalPages);
+                setCurrentPage(0);
             } catch (error) {
                 console.error(error.response);
             }

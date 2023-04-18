@@ -33,7 +33,7 @@ function deleteStudent(id) {
 function searchStudents(search) {
     return InstanceAxios
         .get("/students?search=" + search)
-        .then(response => response.data.content);
+        .then(response => response.data);
 }
 
 export default {

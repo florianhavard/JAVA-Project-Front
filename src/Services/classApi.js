@@ -39,7 +39,7 @@ function deleteClass(id) {
 function searchClasses(search) {
     return InstanceAxios
         .get("/classes?search=" + search)
-        .then(response => response.data.content);
+        .then(response => response.data);
 }
 
 export default {

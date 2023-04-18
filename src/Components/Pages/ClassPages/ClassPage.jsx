@@ -58,7 +58,9 @@ function ClassPage() {
         if (searchTerm) {
             try {
                 const data = await classApi.search(searchTerm);
-                setClasses(data);
+                setClasses(data.content);
+                setTotalPages(data.totalPages);
+                setCurrentPage(0);
             } catch (error) {
                 console.error(error.response);
             }
